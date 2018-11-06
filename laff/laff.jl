@@ -1,9 +1,10 @@
 module laff
+    using LinearAlgebra
     include("vecvec/copy.jl")
     include("vecvec/scal.jl")
     include("vecvec/axpy.jl")
     include("vecvec/dot.jl")
-
+    include("vecvec/norm2.jl")
 
 
 end

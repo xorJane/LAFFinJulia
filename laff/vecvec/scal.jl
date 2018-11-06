@@ -1,5 +1,3 @@
-using LinearAlgebra
-
 """
     scal!(alpha, x)
 
