@@ -44,3 +44,13 @@ end
     @test flame.cont_with_3x1_to_2x1(A0, A1, A2) == ([1, 2, 3, 4], [5])
     @test flame.cont_with_3x1_to_2x1(A0, A1, A2, "BOTTOM") == ([1, 2, 3], [4, 5])
 end
+
+@testset "merge_2x1 for Vectors" begin
+    yT = [1, 2, 3]
+    yB = [4, 5]
+    y = fill(0, 5)
+    flame.merge_2x1!(yT, yB, y)
+    @test y == [1, 2, 3, 4, 5]
+
+
+end

@@ -47,4 +47,11 @@ function cont_with_3x1_to_2x1(A0::Vector, A1::Vector, A2::Vector, side = "TOP")
     (side == "TOP") ? (vcat(A0, A1), A2) : (A0, vcat(A1, A2))
 end
 
+function merge_2x1!(T::Vector, B::Vector, A::Vector)
+    Atemp = vcat(T, B)
+    for i in 1:length(Atemp)
+        A[i] = Atemp[i]
+    end
+end
+
 end
