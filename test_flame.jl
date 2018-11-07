@@ -35,6 +35,12 @@ end
         A2 = AB[1:end]
         @test flame.repart_2x1_to_3x1(AT, AB, m, "TOP") == (A0, A1, A2)
     end
+end
 
-
+@testset "cont_with_3x1_to_2x1 for Vectors" begin
+    A0 = [1, 2, 3]
+    A1 = [4]
+    A2 = [5]
+    @test flame.cont_with_3x1_to_2x1(A0, A1, A2) == ([1, 2, 3, 4], [5])
+    @test flame.cont_with_3x1_to_2x1(A0, A1, A2, "BOTTOM") == ([1, 2, 3], [4, 5])
 end

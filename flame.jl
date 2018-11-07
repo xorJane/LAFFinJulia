@@ -30,7 +30,7 @@ function repart_2x1_to_3x1(AT::Vector, AB::Vector, m=1, side = "BOTTOM")
     #           A1 == AT[1:end] if length(AT) == 0
     #           A1 == AT[1:end] if length(AT) <= m
     #           Generalization:
-    #           A1 == AT[1:end]
+    #           A1 == AT[max(1, end - m + 1):end]
     # What if m > length(AT) > 0?
     A1 = []
     if side == "BOTTOM"
@@ -40,12 +40,11 @@ function repart_2x1_to_3x1(AT::Vector, AB::Vector, m=1, side = "BOTTOM")
     end
     # Expressed another way:
     # A1 = (side == "BOTTOM") ? AB[1:min(bottom_start - 1, length(AB))] : AT[max(top_end + 1, 1): end]
-
     return A0, A1, A2
 end
 
-function cont_with_3x1_to_2x1()
-
+function cont_with_3x1_to_2x1(A0::Vector, A1::Vector, A2::Vector, side = "TOP")
+    (side == "TOP") ? (vcat(A0, A1), A2) : (A0, vcat(A1, A2))
 end
 
 end
