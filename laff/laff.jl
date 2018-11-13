@@ -5,6 +5,6 @@ module laff
     include("vecvec/axpy.jl")
     include("vecvec/dot.jl")
     include("vecvec/norm2.jl")
-
+    include("util/zerov.jl")
 
 end
