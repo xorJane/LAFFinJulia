@@ -79,64 +79,64 @@ function merge_1x2!(L::Matrix, R::Matrix, A::Matrix)
 end
 
 """
-    cont_with_1x3_to_1x2(A0::Matrix, A1::Matrix, A2::Matrix, side = "LEFT")
+    cont_with_1x3_to_1x2(A1::Matrix, A2::Matrix, A3::Matrix, side = "LEFT")
 
-Repartition three submatrices (vertical slabs of an original matrix) into two by combining the middle portion, A1, of the original matrix with the `side` input submatrix.
+Repartition three submatrices (vertical slabs of an original matrix) into two by combining the middle portion, A2, of the original matrix with the `side` input submatrix.
 """
-function cont_with_1x3_to_1x2(A0::Matrix, A1::Matrix, A2::Matrix, side = "LEFT")
-    (side == "LEFT") ? (hcat(A0, A1), A2) : (A0, hcat(A1, A2))
+function cont_with_1x3_to_1x2(A1::Matrix, A2::Matrix, A3::Matrix, side = "LEFT")
+    (side == "LEFT") ? (hcat(A1, A2), A3) : (A1, hcat(A2, A3))
 end
 
 """
-    cont_with_3x1_to_2x1(A0::Vector, A1::Vector, A2::Vector, side = "TOP")
+    cont_with_3x1_to_2x1(A1::Vector, A2::Vector, A3::Vector, side = "TOP")
 
-Repartition three subvectors into two by combining the middle portion, A1, of the original vector with the `side` input subvector.
+Repartition three subvectors into two by combining the middle portion, A2, of the original vector with the `side` input subvector.
 
 """
-function cont_with_3x1_to_2x1(A0::Vector, A1::Vector, A2::Vector, side = "TOP")
-    (side == "TOP") ? (vcat(A0, A1), A2) : (A0, vcat(A1, A2))
+function cont_with_3x1_to_2x1(A1::Vector, A2::Vector, A3::Vector, side = "TOP")
+    (side == "TOP") ? (vcat(A1, A2), A3) : (A1, vcat(A2, A3))
 end
 
 """
-    cont_with_3x1_to_2x1(A0::Matrix, A1::Matrix, A2::Matrix, side = "TOP")
+    cont_with_3x1_to_2x1(A1::Matrix, A2::Matrix, A3::Matrix, side = "TOP")
 
-Repartition three submatrices (horizontal slabs of an original matrix) into two by combining the middle portion, A1, of the original matrix with the `side` input submatrix.
+Repartition three submatrices (horizontal slabs of an original matrix) into two by combining the middle portion, A2, of the original matrix with the `side` input submatrix.
 """
-function cont_with_3x1_to_2x1(A0::Matrix, A1::Matrix, A2::Matrix, side = "TOP")
-    (side == "TOP") ? (vcat(A0, A1), A2) : (A0, vcat(A1, A2))
+function cont_with_3x1_to_2x1(A1::Matrix, A2::Matrix, A3::Matrix, side = "TOP")
+    (side == "TOP") ? (vcat(A1, A2), A3) : (A1, vcat(A2, A3))
 end
 
 """
-    cont_with_3x3_to_2x2(A00::Matrix, A01::Matrix, A02::Matrix,
-                         A10::Matrix, A11::Matrix, A12::Matrix,
-                         A20::Matrix, A21::Matrix, A22::Matrix, quad = "TL")  
+    cont_with_3x3_to_2x2(A11::Matrix, A12::Matrix, A13::Matrix,
+                              A21::Matrix, A22::Matrix, A23::Matrix,
+                              A31::Matrix, A32::Matrix, A33::Matrix, quad = "TL") 
 
 Concatenate submatrices together to repartition the original matrix into 4 quadrants
-rather than a 3x3 grid. The middle submatrix A11 is included in the `quad` output quadrant.
+rather than a 3x3 grid. The middle submatrix `A22` is included in the `quad` output quadrant.
 """
-function cont_with_3x3_to_2x2(A00::Matrix, A01::Matrix, A02::Matrix,
-                              A10::Matrix, A11::Matrix, A12::Matrix,
-                              A20::Matrix, A21::Matrix, A22::Matrix, quad = "TL")
+function cont_with_3x3_to_2x2(A11::Matrix, A12::Matrix, A13::Matrix,
+                              A21::Matrix, A22::Matrix, A23::Matrix,
+                              A31::Matrix, A32::Matrix, A33::Matrix, quad = "TL")
     if quad == "TL"
-        TL = hcat(vcat(A00, A10), vcat(A01, A11))
-        TR = vcat(A02, A12)
-        BL = hcat(A20, A21)
-        BR = A22
+        TL = hcat(vcat(A11, A21), vcat(A12, A22))
+        TR = vcat(A13, A23)
+        BL = hcat(A31, A32)
+        BR = A33
     elseif quad == "TR"
-        TL = vcat(A00, A10)
-        TR = hcat(vcat(A01, A11), vcat(A02, A12))
-        BL = A20
-        BR = hcat(A21, A22)
+        TL = vcat(A11, A21)
+        TR = hcat(vcat(A12, A22), vcat(A13, A23))
+        BL = A31
+        BR = hcat(A32, A33)
     elseif quad == "BL"
-        TL = hcat(A00, A01)
-        TR = A02
-        BL = hcat(vcat(A10, A20), vcat(A11, A21))
-        BR = vcat(A12, A22)
+        TL = hcat(A11, A12)
+        TR = A13
+        BL = hcat(vcat(A21, A31), vcat(A22, A32))
+        BR = vcat(A23, A33)
     elseif quad == "BR"
-        TL = A00
-        TR = hcat(A01, A02)
-        BL = vcat(A10, A20)
-        BR = hcat(vcat(A11, A21), vcat(A12, A22))       
+        TL = A11
+        TR = hcat(A12, A13)
+        BL = vcat(A21, A31)
+        BR = hcat(vcat(A22, A32), vcat(A23, A33))       
     end
     
     return TL, TR, BL, BR
@@ -228,87 +228,87 @@ the middle submatrix.
 function repart_1x2_to_1x3(AL::Matrix, AR::Matrix, n=1, side = "RIGHT")
     if side == "RIGHT"
         vpart = n
-        A0 = AL
-        A1 = AR[:, 1:vpart]
-        A2 = AR[:, (vpart + 1):end]
+        A1 = AL
+        A2 = AR[:, 1:vpart]
+        A3 = AR[:, (vpart + 1):end]
     else
         vpart = size(AL)[2] - n
-        A0 = AL[:, 1:vpart]
-        A1 = AL[:, (vpart + 1):end]
-        A2 = AR
+        A1 = AL[:, 1:vpart]
+        A2 = AL[:, (vpart + 1):end]
+        A3 = AR
     end
     
-    return A0, A1, A2
+    return A1, A2, A3
 end
 
 """
-    repart_2x1_to_3x1(AT::Vector, AB::Vector, m=1, side = "BOTTOM")
+    repart_2x1_to_3x1(xT::Vector, xB::Vector, m=1, side = "BOTTOM")
 
 Repartition a vector already divided into top and bottom portions,
-`AT` and `AB`, into three horizontal slabs, `A0`, `A1`, and `A2`.
-The middle segment, `A1`, is created from the `m` elements in the `side`
-input portion that are closest to the interface between `AT` and `AB`.
+`xT` and `xB`, into three horizontal slabs, `x1`, `x2`, and `x3`.
+The middle segment, `x2`, is created from the `m` elements in the `side`
+input portion that are closest to the interface between `xT` and `xB`.
 
-For example, if side == "BOTTOM", A0 == AT; A1 is created from the top m
-elements from AB, and A2 is what remains of AB after its m elements are excluded.
+For example, if side == "BOTTOM", x1 == xT; x2 is created from the top m
+elements from xB, and x2 is what remains of xB after its m elements are excluded.
 """
 function repart_2x1_to_3x1(xT::Vector, xB::Vector, m=1, side = "BOTTOM")
     top_end = (side == "BOTTOM") ? size(xT)[1] : size(xT)[1] - m
     bottom_start = (side == "TOP") ? 1 : m + 1
 
-    x0 = xT[1:top_end]
-    x2 = xB[bottom_start: end]
+    x1 = xT[1:top_end]
+    x3 = xB[bottom_start: end]
     # What if you're taking from the bottom but the bottom is empty?
     # Or taking from the top, but the top is empty?
-    # If "BOTTOM", x1 == xB[1:m] if length(xB) >= m,
-    #              x1 == xB[1:0] if length(xB) == 0
-    #              x1 == xB[1:length(xB)] if length(xB) <= m
+    # If "BOTTOM", x2 == xB[1:m] if length(xB) >= m,
+    #              x2 == xB[1:0] if length(xB) == 0
+    #              x2 == xB[1:length(xB)] if length(xB) <= m
     #              Generalization:
-    #              x1 == xB[1:min(length(xB), m)]
+    #              x2 == xB[1:min(length(xB), m)]
     # What if m > length(xB) > 0?
-    # If "TOP", x1 == xT[end - m + 1: end] if length(xT) >= m,
-    #           x1 == xT[1:end] if length(xT) == 0
-    #           x1 == xT[1:end] if length(xT) <= m
+    # If "TOP", x2 == xT[end - m + 1: end] if length(xT) >= m,
+    #           x2 == xT[1:end] if length(xT) == 0
+    #           x2 == xT[1:end] if length(xT) <= m
     #           Generalization:
-    #           x1 == xT[max(1, end - m + 1):end]
+    #           x2 == xT[max(1, end - m + 1):end]
     # What if m > length(xT) > 0?
-    x1 = []
+    x2 = []
     if side == "BOTTOM"
-        x1 = xB[1:min(bottom_start - 1, length(xB))]
+        x2 = xB[1:min(bottom_start - 1, length(xB))]
     else
-        x1 = xT[max(top_end + 1, 1): end]
+        x2 = xT[max(top_end + 1, 1): end]
     end
     # Expressed another way:
-    # x1 = (side == "BOTTOM") ? xB[1:min(bottom_start - 1, length(xB))] : xT[max(top_end + 1, 1): end]
-    return x0, x1, x2
+    # x2 = (side == "BOTTOM") ? xB[1:min(bottom_start - 1, length(xB))] : xT[max(top_end + 1, 1): end]
+    return x1, x2, x3
 end
 
 """
     repart_2x1_to_3x1(AT::Matrix, AB::Matrix, m=1, side = "BOTTOM")
 
 Repartition a matrix already divided into top and bottom portions,
-`AT` and `AB`, into three horizontal slabs, `A0`, `A1`, and `A2`.
-The middle segment, `A1`, is created from the `m` rows in the `side`
+`AT` and `AB`, into three horizontal slabs, `A1`, `A2`, and `A3`.
+The middle segment, `A2`, is created from the `m` rows in the `side`
 input portion that are closest to the interface between `AT` and `AB`.
 
-For example, if side == "BOTTOM", A0 == AT; A1 is created from the top m
-rows from AB, and A2 is what remains of AB after its m rows are excluded.
+For example, if side == "BOTTOM", A1 == AT; A2 is created from the top m
+rows from AB, and A3 is what remains of AB after its m rows are excluded.
 """
 function repart_2x1_to_3x1(AT::Matrix, AB::Matrix, m=1, side = "BOTTOM")
     top_end = (side == "BOTTOM") ? size(AT)[1] : size(AT)[1] - m
     bottom_start = (side == "TOP") ? 1 : m + 1
 
-    A0 = AT[1:top_end, :]
-    A2 = AB[bottom_start: end, :]
-    A1 = []
+    A1 = AT[1:top_end, :]
+    A3 = AB[bottom_start: end, :]
+    A2 = []
     if side == "BOTTOM"
-        A1 = AB[1:min(bottom_start - 1, length(AB)), :]
+        A2 = AB[1:min(bottom_start - 1, length(AB)), :]
     else
-        A1 = AT[max(top_end + 1, 1): end, :]
+        A2 = AT[max(top_end + 1, 1): end, :]
     end
     # Expressed another way:
-    # A1 = (side == "BOTTOM") ? AB[1:min(bottom_start - 1, length(AB)), :] : AT[max(top_end + 1, 1): end, :]
-    return A0, A1, A2
+    # A2 = (side == "BOTTOM") ? AB[1:min(bottom_start - 1, length(AB)), :] : AT[max(top_end + 1, 1): end, :]
+    return A1, A2, A3
 end
 
 """
