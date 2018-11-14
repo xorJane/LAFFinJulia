@@ -7,5 +7,6 @@ module laff
     include("vecvec/norm2.jl")
     include("util/zerov.jl")
     include("util/onev.jl")
+    include("vecvec/dots.jl")
 
 end
