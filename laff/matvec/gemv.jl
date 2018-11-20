@@ -19,7 +19,7 @@ function gemv!(trans::String, alpha::Union{Number, Matrix{T} where T <: Number},
     β = (typeof(beta) <: Matrix) ? beta[1, 1] : beta
     
     # Transpose x if it is either a transposed object or a matrix with a single row.
-    # Same for x.
+    # Same for y.
     x = (typeof(x) <: LinearAlgebra.Transpose || (typeof(x) <: Matrix && size(x, 1) == 1)) ? transpose(x) : x
     y = (typeof(y) <: LinearAlgebra.Transpose || (typeof(y) <: Matrix && size(y, 1) == 1)) ? transpose(y) : y
     
