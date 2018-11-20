@@ -8,5 +8,6 @@ module laff
     include("util/zerov.jl")
     include("util/onev.jl")
     include("vecvec/dots.jl")
+    include("matvec/gemv.jl")
 
 end
