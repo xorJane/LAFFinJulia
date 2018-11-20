@@ -10,5 +10,6 @@ module laff
     include("vecvec/dots.jl")
     include("matvec/gemv.jl")
     include("matvec/ger.jl")
+    include("vecvec/invscal.jl")
 
 end
