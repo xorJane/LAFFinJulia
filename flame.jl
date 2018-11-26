@@ -4,7 +4,7 @@ module flame
 """
     merge_2x2!(TL::Matrix, TR::Matrix, BL::Matrix, BR::Matrix, A::Matrix)
 
-Modify matrix `A` to contain the values of submatrices/quandrants TL, TR,
+Modify `A` to contain the values of submatrices/quadrants TL, TR,
 BL, and BR.
 """
 function merge_2x2!(TL::Matrix, TR::Matrix, BL::Matrix, BR::Matrix, A::Matrix)
@@ -81,7 +81,7 @@ end
 """
     cont_with_1x3_to_1x2(A1::Matrix, A2::Matrix, A3::Matrix, side = "LEFT")
 
-Repartition three submatrices (vertical slabs of an original matrix) into two by combining the middle portion, A2, of the original matrix with the `side` input submatrix.
+Repartition three matrices (vertical slabs of an original matrix) into two by combining the middle portion, A2, of the original matrix with the `side` input submatrix.
 """
 function cont_with_1x3_to_1x2(A1::Matrix, A2::Matrix, A3::Matrix, side = "LEFT")
     (side == "LEFT") ? (hcat(A1, A2), A3) : (A1, hcat(A2, A3))
@@ -90,7 +90,7 @@ end
 """
     cont_with_3x1_to_2x1(A1::Vector, A2::Vector, A3::Vector, side = "TOP")
 
-Repartition three subvectors into two by combining the middle portion, A2, of the original vector with the `side` input subvector.
+Repartition three vectors into two by combining the middle portion, A2, of the original vector with the `side` input subvector.
 
 """
 function cont_with_3x1_to_2x1(A1::Vector, A2::Vector, A3::Vector, side = "TOP")
@@ -100,7 +100,7 @@ end
 """
     cont_with_3x1_to_2x1(A1::Matrix, A2::Matrix, A3::Matrix, side = "TOP")
 
-Repartition three submatrices (horizontal slabs of an original matrix) into two by combining the middle portion, A2, of the original matrix with the `side` input submatrix.
+Repartition three matrices (horizontal slabs of an original matrix) into two by combining the middle portion, A2, of the original matrix with the `side` input submatrix.
 """
 function cont_with_3x1_to_2x1(A1::Matrix, A2::Matrix, A3::Matrix, side = "TOP")
     (side == "TOP") ? (vcat(A1, A2), A3) : (A1, vcat(A2, A3))
@@ -108,10 +108,10 @@ end
 
 """
     cont_with_3x3_to_2x2(A11::Matrix, A12::Matrix, A13::Matrix,
-                              A21::Matrix, A22::Matrix, A23::Matrix,
-                              A31::Matrix, A32::Matrix, A33::Matrix, quad = "TL") 
+                         A21::Matrix, A22::Matrix, A23::Matrix,
+                         A31::Matrix, A32::Matrix, A33::Matrix, quad = "TL") 
 
-Concatenate submatrices together to repartition the original matrix into 4 quadrants
+Concatenate matrices together to repartition the original matrix into 4 quadrants
 rather than a 3x3 grid. The middle submatrix `A22` is included in the `quad` output quadrant.
 """
 function cont_with_3x3_to_2x2(A11::Matrix, A12::Matrix, A13::Matrix,
