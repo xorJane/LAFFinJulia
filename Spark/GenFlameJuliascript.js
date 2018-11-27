@@ -230,7 +230,7 @@ function guard(NumOpers, OperInfo)
 
 function header(FnName, FnType, Variant, NumOpers, OperInfo)
 {
-	var returnStr = 'include("../flame.jl")\nusing .flame\ninclude("../laff/laff.jl")\nusing .laff\n\nfunction <fn>_<type><var>!(<args><nbalg>)';
+	var returnStr = 'include("../flame.jl")\ninclude("../laff/laff.jl")\n\nfunction <fn>_<type><var>!(<args><nbalg>)';
     var operand;
 
 	returnStr = returnStr.replace(/<fn>/, FnName);
