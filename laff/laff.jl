@@ -17,5 +17,6 @@ module laff
     include("matvec/trsv_unn.jl")
     include("matvec/trsv_unu.jl")
     include("matvec/trsv_utn.jl")
+    include("matvec/trsv.jl")
 
 end
