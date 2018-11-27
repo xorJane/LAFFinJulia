@@ -18,5 +18,10 @@ module laff
     include("matvec/trsv_unu.jl")
     include("matvec/trsv_utn.jl")
     include("matvec/trsv.jl")
+    include("matmat/trsm_lnu.jl")
+    include("matmat/trsm_ltu.jl")
+    include("matmat/trsm_unn.jl")
+    include("matmat/trsm_utn.jl")
+    include("matvec/trsm.jl")
 
 end
