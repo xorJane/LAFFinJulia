@@ -11,5 +11,11 @@ module laff
     include("matvec/gemv.jl")
     include("matvec/ger.jl")
     include("vecvec/invscal.jl")
+    include("matvec/trsv_lnn.jl")
+    include("matvec/trsv_lnu.jl")
+    include("matvec/trsv_ltu.jl")
+    include("matvec/trsv_unn.jl")
+    include("matvec/trsv_unu.jl")
+    include("matvec/trsv_utn.jl")
 
 end
