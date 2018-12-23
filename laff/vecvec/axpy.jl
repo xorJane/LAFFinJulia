@@ -19,8 +19,8 @@ Compute y = alpha * x + y, overwriting y.
 x and y can be row and/or column vectors. If necessary, an implicit transposition happens.
 """
 function axpy!(alpha::Union{Array{T} where T <: Number}, x::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number}, y::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number})
-    @assert length(alpha) == 1 "laff.axpy!: First input must be an Array with one element only!"
+    @assert length(alpha) == 1 "laff.axpy!: First input must be an Array with one element only, not $alpha !"
     m = length(x)
-    @assert m == length(y) "Dimension mismatch between x and y."
+    @assert m == length(y) "Dimension mismatch between x and y: $x, $y."
     for i in 1:m; y[i] += alpha[1] * x[i]; end
 end

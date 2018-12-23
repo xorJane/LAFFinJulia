@@ -1,5 +1,5 @@
 """
-    trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::x::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
+    trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
 
 Solve A x = b or trans( A ) x = b, overwriting b with x
 
@@ -24,7 +24,7 @@ elseif diag == "Nonunit diagonal"
 
 """
 
-function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::x::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
+function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
     # Extract sizes
     m_A, n_A = size(A)
     m_b = length(b)
@@ -34,14 +34,14 @@ function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <
     @assert ((trans == "No transpose") || (trans == "Transpose")) "laff.trsv!: illegal value for trans"
     @assert ((diag == "Nonunit diagonal") || (diag == "Unit diagonal")) "laff.trsv!: illegal value for diag"
     @assert m_b in size(b) "laff.trsv!: b is neither a vector nor a single row or column of a matrix!"
-    @assert m_b == n_A "laff.trsv!: size mismatch between b and A"
+    @assert m_b == n_A "laff.trsv!: size mismatch between b and A ($m_b vs $n_A)"
     
     if uplo == "Lower triangular"
         if trans == "No transpose"
             if diag == "Nonunit diagonal"
                 trsv_lnn!( A, b )
             else
-                trsv_lnu( A, b )
+                trsv_lnu!( A, b )
             end
         else # trans == "Transpose"
             if diag == "Unit diagonal"
@@ -56,7 +56,7 @@ function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <
             if diag == "Nonunit diagonal"
                 trsv_unn!( A, b )
             else
-                trsv_unu( A, b )
+                trsv_unu!( A, b )
             end
         else # trans == "Transpose"
             if diag == "Nonunit diagonal"

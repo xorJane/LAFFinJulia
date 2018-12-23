@@ -22,6 +22,7 @@ module laff
     include("matmat/trsm_ltu.jl")
     include("matmat/trsm_unn.jl")
     include("matmat/trsm_utn.jl")
-    include("matvec/trsm.jl")
+    include("matmat/trsm.jl")
+    include("matmat/gemm.jl")
 
 end

@@ -1,5 +1,5 @@
 """
-    trsm!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, B::x::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number})
+    trsm!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, B::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number})
 
 Solve A X = B or trans( A X ) = trans( B ), overwriting B with X
 
@@ -23,7 +23,7 @@ elseif diag == "Nonunit diagonal"
    Use the entries on the diagonal of A
 
 """
-function trsm!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, B::x::Union{LinearAlgebra.Transpose{T, Matrix{T}} where T <: Number, Matrix{T} where T <:Number})
+function trsm!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, B::Union{LinearAlgebra.Transpose{T, Matrix{T}} where T <: Number, Matrix{T} where T <:Number})
     # Extract sizes
     m_A, n_A = size(A)
     m_B, n_B = size(B)
@@ -54,11 +54,11 @@ function trsm!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <
             if diag == "Unit diagonal"
                 println( "laff.trsm!: trans == No transpose not yet implemented for Upper triangular, unit diagonal" )
             else
-                trsv_unn!( A, B )
+                trsm_unn!( A, B )
             end
         else # trans == "Transpose"
             if diag == "Nonunit diagonal"
-                trsv_utn!( A, b )
+                trsm_utn!( A, B )
             else
                 println( "laff.trsm: diag == Unit diagonal not yet implemented for Upper triangular" )
             end

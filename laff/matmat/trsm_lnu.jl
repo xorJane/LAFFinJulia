@@ -1,7 +1,11 @@
 include("../../flame.jl")
-include("../laff.jl")
 using .laff: trsv!
 
+"""
+    trsm_lnu!(L, B)
+
+Solve LX = B, overwriting B with X, where L is a lower triangular matrix with a unit diagonal.
+"""
 function trsm_lnu!(L, B)
 
     BL, BR = flame.part_1x2(B, 

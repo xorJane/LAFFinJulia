@@ -1,7 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: scal!, dots!
 
+"""
+    trsv_ltu!(L, b)
+
+Solve L'x = b, overwriting b with x, where L is a lower triangular matrix with a unit diagonal.
+"""
 function trsv_ltu!(L, b)
 
     LTL, LTR, 
@@ -29,7 +32,7 @@ function trsv_ltu!(L, b)
         #------------------------------------------------------------#
 
         dots!( -l21, b2, beta1 )
-        scal!( 1/lambda11, beta1 )
+#         scal!( 1.0 ./ lambda11, beta1 )
 
         #------------------------------------------------------------#
 

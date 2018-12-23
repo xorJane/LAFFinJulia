@@ -1,8 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: axpy!, invscal!
 
+"""
+    trsv_utn!(U, b)
 
+Solve U'x = b, overwriting b with x, where U is an upper triangular matrix with a non-unit diagonal.
+"""
 function trsv_utn!(U, b)
 
     UTL, UTR, 
@@ -30,7 +32,10 @@ function trsv_utn!(U, b)
         #------------------------------------------------------------#
 
         invscal!( upsilon11, beta1 )
-        axpy!( -beta1, u12t, b2 )
+#         axpy!( -beta1, u12t, b2 )
+        axpy!( -beta1, u21, b2 )
+#         @assert false == true "beta1 is $beta1"
+
 
         #------------------------------------------------------------#
 

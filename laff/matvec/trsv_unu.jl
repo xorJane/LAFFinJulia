@@ -1,7 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: dots!
 
+"""
+    trsv_unu!(L, b)
+
+Solve Ux = b, overwriting b with x, where U is an upper triangular matrix with a unit diagonal.
+"""
 function trsv_unu!(U, b)
 
     UTL, UTR, 

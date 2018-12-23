@@ -1,8 +1,11 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: trsv!
 
-function trsm_lnu!(L, B)
+"""
+    trsm_ltu!(L, B)
+
+Solve L'X = B, overwriting B with X, where L is a lower triangular matrix with a unit diagonal.
+"""
+function trsm_ltu!(L, B)
 
     BT, 
     BB  = flame.part_2x1(B, 
@@ -18,7 +21,7 @@ function trsm_lnu!(L, B)
 
         #------------------------------------------------------------#
 
-        laff.trsv!( "Lower triangular", "No transpose", "Unit diagonal", L, b1t )
+        laff.trsv!( "Lower triangular", "Transpose", "Unit diagonal", L, b1t )
 
         #------------------------------------------------------------#
 

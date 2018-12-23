@@ -1,9 +1,11 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: trsv!
 
+"""
+    trsm_utn!(U, B)
 
-function trsm_unn!(U, B)
+Solve U'X = B, overwriting B with X, where U is an upper triangular matrix with a nonunit diagonal.
+"""
+function trsm_utn!(U, B)
 
     BT, 
     BB  = flame.part_2x1(B, 
@@ -19,7 +21,7 @@ function trsm_unn!(U, B)
 
         #------------------------------------------------------------#
 
-        laff.trsv!( "Upper triangular", "No transpose", "Nonunit diagonal", U, b1t )
+        laff.trsv!( "Upper triangular", "Transpose", "Nonunit diagonal", U, b1t )
 
         #------------------------------------------------------------#
 

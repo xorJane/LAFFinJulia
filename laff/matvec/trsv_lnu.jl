@@ -1,7 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: axpy!
 
+"""
+    trsv_lnu!(L, b)
+
+Solve Lx = b, overwriting b with x, where L is a lower triangular matrix with a unit diagonal.
+"""
 function trsv_lnu!(L, b)
 
     LTL, LTR, 

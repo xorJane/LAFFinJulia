@@ -1,7 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: trsv!
 
+"""
+    trsm_unn!(U, B)
+
+Solve UX = B, overwriting B with X, where U is an upper triangular matrix with a nonunit diagonal.
+"""
 function trsm_unn!(U, B)
 
     BL, BR = flame.part_1x2(B, 

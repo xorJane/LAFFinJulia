@@ -1,5 +1,5 @@
 """
-    dot!(x, y, alpha)
+    dots!(x, y, alpha)
 
 Compute alpha = x' * y + alpha, storing the result in alpha and updating alpha.
 

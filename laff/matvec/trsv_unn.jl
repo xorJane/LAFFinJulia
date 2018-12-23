@@ -1,7 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: dots!, scal!
 
+"""
+    trsv_unn!(L, b)
+
+Solve Ux = b, overwriting b with x, where U is an upper triangular matrix with a non-unit diagonal.
+"""
 function trsv_unn!(U, b)
 
     UTL, UTR, 
@@ -29,7 +32,7 @@ function trsv_unn!(U, b)
         #------------------------------------------------------------#
 
         dots!( -u12t, b2, beta1 )
-        scal!( 1/upsilon11, beta1 )
+        scal!( 1 ./ upsilon11, beta1 )
 
         #------------------------------------------------------------#
 

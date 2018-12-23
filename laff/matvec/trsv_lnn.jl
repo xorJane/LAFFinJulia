@@ -1,7 +1,10 @@
-include("../../flame.jl")
-include("../laff.jl")
 using .laff: scal!, axpy!
 
+"""
+    trsv_lnn!(L, b)
+
+Solve Lx = b, overwriting b with x, where L is a lower triangular matrix with a non-unit diagonal.
+"""
 function trsv_lnn!(L, b)
 
     LTL, LTR, 
@@ -28,7 +31,7 @@ function trsv_lnn!(L, b)
 
         #------------------------------------------------------------#
 
-        scal!( 1./lambda11, beta1 )
+        scal!( 1.0 ./ lambda11, beta1 )
         axpy!( -beta1, l21, b2 )
 
         #------------------------------------------------------------#
