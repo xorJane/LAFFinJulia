@@ -7,33 +7,25 @@ Solve L'X = B, overwriting B with X, where L is a lower triangular matrix with a
 """
 function trsm_ltu!(L, B)
 
-    BT, 
-    BB  = flame.part_2x1(B, 
-                         0, "TOP")
+    BL, BR = flame.part_1x2(B, 
+                            0, "LEFT")
 
-    while size(BT, 1) < size(B, 1)
+    while size(BL, 2) < size(B, 2)
 
-        B0,  
-        b1t, 
-        B2   = flame.repart_2x1_to_3x1(BT, 
-                                       BB, 
-                                       1, "BOTTOM")
+        B0, b1, B2 = flame.repart_1x2_to_1x3(BL, BR, 
+                                             1, "RIGHT")
 
         #------------------------------------------------------------#
 
-        laff.trsv!( "Lower triangular", "Transpose", "Unit diagonal", L, b1t )
+        laff.trsv!( "Lower triangular", "Transpose", "Unit diagonal", L, b1 )
 
         #------------------------------------------------------------#
 
-        BT, 
-        BB  = flame.cont_with_3x1_to_2x1(B0,  
-                                         b1t, 
-                                         B2,  
-                                         "TOP")
+        BL, BR = flame.cont_with_1x3_to_1x2(B0, b1, B2, 
+                                            "LEFT")
 
     end
 
-    flame.merge_2x1!(BT, 
-                     BB, B)
+    flame.merge_1x2!(BL, BR, B)
 
 end

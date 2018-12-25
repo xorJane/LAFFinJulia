@@ -1,5 +1,6 @@
 module flame
 
+using LinearAlgebra
 
 """
     merge_2x2!(TL::Matrix, TR::Matrix, BL::Matrix, BR::Matrix, A::Matrix)
@@ -10,25 +11,25 @@ BL, and BR.
 function merge_2x2!(TL::Matrix, TR::Matrix, BL::Matrix, BR::Matrix, A::Matrix)
     if size(TL)[1] > 0 && size(TL)[2] > 0
         for i in 1:size(TL)[1], j in 1:size(TL)[2]
-           A[i, j] = TL[i, j] 
+           A[i, j] = TL[i, j]
         end
     end
-    
+
     if size(TR)[1] > 0 && size(TR)[2] > 0
         for i in 1:size(TR)[1], j in 1:size(TR)[2]
-           A[i, j + size(TL)[2]] = TR[i, j] 
+           A[i, j + size(TL)[2]] = TR[i, j]
         end
     end
-    
+
     if size(BL)[1] > 0 && size(BL)[2] > 0
         for i in 1:size(BL)[1], j in 1:size(BL)[2]
-           A[i + size(TL)[1], j] = BL[i, j] 
+           A[i + size(TL)[1], j] = BL[i, j]
         end
     end
-    
+
     if size(BR)[1] > 0 && size(BR)[2] > 0
         for i in 1:size(BR)[1], j in 1:size(BR)[2]
-           A[i + size(TL)[1], j + size(TL)[2]] = BR[i, j] 
+           A[i + size(TL)[1], j + size(TL)[2]] = BR[i, j]
         end
     end
 end
@@ -46,11 +47,11 @@ function merge_2x1!(T::Vector, B::Vector, x::Vector)
 end
 
 """
-    merge_2x1!(T::Matrix, B::Matrix, A::Matrix)
+    merge_2x1!(T::Matrix, B::Matrix, A::Union{Matrix, LinearAlgebra.Transpose{T, Matrix{T}} where T})
 
 Combine input matrices `T` and `B` vertically to create input/output matrix `A`.
 """
-function merge_2x1!(T::Matrix, B::Matrix, A::Matrix)
+function merge_2x1!(T::Matrix, B::Matrix, A::Union{Matrix, LinearAlgebra.Transpose{T, Matrix{T}} where T})
     Atemp = vcat(T, B)
     m, n = size(Atemp)
     for i in 1:m, j in 1:n
@@ -70,10 +71,10 @@ function merge_1x2!(L::Matrix, R::Matrix, A::Matrix)
             A[i, j] = L[i, j]
         end
     end
-    
+
     if size(R)[1] > 0 && size(R)[2] > 0
         for i in 1:size(R)[1], j in 1:size(R)[2]
-           A[i, j + size(L)[2]] = R[i, j] 
+           A[i, j + size(L)[2]] = R[i, j]
         end
     end
 end
@@ -109,7 +110,7 @@ end
 """
     cont_with_3x3_to_2x2(A11::Matrix, A12::Matrix, A13::Matrix,
                          A21::Matrix, A22::Matrix, A23::Matrix,
-                         A31::Matrix, A32::Matrix, A33::Matrix, quad = "TL") 
+                         A31::Matrix, A32::Matrix, A33::Matrix, quad = "TL")
 
 Concatenate matrices together to repartition the original matrix into 4 quadrants
 rather than a 3x3 grid. The middle submatrix `A22` is included in the `quad` output quadrant.
@@ -136,9 +137,9 @@ function cont_with_3x3_to_2x2(A11::Matrix, A12::Matrix, A13::Matrix,
         TL = A11
         TR = hcat(A12, A13)
         BL = vcat(A21, A31)
-        BR = hcat(vcat(A22, A32), vcat(A23, A33))       
+        BR = hcat(vcat(A22, A32), vcat(A23, A33))
     end
-    
+
     return TL, TR, BL, BR
 end
 
@@ -156,9 +157,9 @@ function part_1x2(A::Matrix, vpart = 0, side = "LEFT")
     elseif !(side in ("LEFT", "RIGHT"))
         throw(ArgumentError("""side must be "LEFT" or "RIGHT" """))
     end
-    
+
     vpart = (side == "LEFT") ? vpart : size(A)[2] - vpart
-    
+
     AL, AR = A[:, 1:vpart], A[:, vpart + 1:end]
 end
 
@@ -186,7 +187,7 @@ end
 Partition a matrix into top and bottom portions, with
 `hpart` rows in the `side` portion.
 """
-function part_2x1(A::Matrix, hpart=0, side="TOP")
+    function part_2x1(A::Union{Matrix, LinearAlgebra.Transpose{T, Matrix{T}} where T}, hpart=0, side="TOP")
     if hpart < 0
         throw(DimensionMismatch("size < 0"))
     elseif hpart > size(A)[1]
@@ -208,13 +209,13 @@ function part_2x2(A::Matrix, m::Int, n::Int, quad::String)
     if !(quad in ("TL", "TR", "BL", "BR"))
         throw(ArgumentError("""quad must be "TL", "TR", "BL", or "BR"."""))
     end
-    
+
     hpart = (quad in ("TL", "TR")) ? m : size(A)[1] - m
     vpart = (quad in ("TL", "BL")) ? n : size(A)[2] - n
-    
+
     TL, TR = A[1:hpart, 1:vpart], A[1:hpart, (vpart + 1):end]
     BL, BR = A[(hpart + 1):end, 1:vpart], A[(hpart + 1):end, (vpart + 1):end]
-    
+
     return TL, TR, BL, BR
 end
 
@@ -237,7 +238,7 @@ function repart_1x2_to_1x3(AL::Matrix, AR::Matrix, n=1, side = "RIGHT")
         A2 = AL[:, (vpart + 1):end]
         A3 = AR
     end
-    
+
     return A1, A2, A3
 end
 
@@ -313,7 +314,7 @@ end
 
 """
     repart_2x2_to_3x3(ATL::Matrix, ATR::Matrix,
-                           ABL::Matrix, ABR::Matrix, m = 1, n = 1, quad = "BR")
+                      ABL::Matrix, ABR::Matrix, m = 1, n = 1, quad = "BR")
 
 Repartition a 2x2 matrix into a 3x3 matrix. The `quad` quadrant is broken into four
 submatrices and the interior matrix returned, `A22`, will be m x n.
@@ -322,7 +323,7 @@ function repart_2x2_to_3x3(ATL::Matrix, ATR::Matrix,
                            ABL::Matrix, ABR::Matrix, m = 1, n = 1, quad = "BR")
     hpart = (quad in ("TL", "TR")) ? size(ATL, 1) - m : m
     vpart = (quad in ("TL", "BL")) ? size(ATL, 2) - n : n
-    
+
     if quad == "TL"
         A11, A12, A13 = ATL[1:hpart, 1:vpart], ATL[1:hpart, (vpart + 1):end], ATR[1:hpart, :]
         A21, A22, A23 = ATL[(hpart + 1):end, 1:vpart], ATL[(hpart + 1):end, (vpart + 1):end], ATR[(hpart + 1):end, :]
@@ -340,34 +341,11 @@ function repart_2x2_to_3x3(ATL::Matrix, ATR::Matrix,
         A21, A22, A23 = ABL[1:hpart, :], ABR[1:hpart, 1:vpart], ABR[1:hpart, (vpart + 1):end]
         A31, A32, A33 = ABL[(hpart + 1):end, :], ABR[(hpart + 1):end, 1:vpart], ABR[(hpart + 1):end, (vpart + 1):end]
     end
-    
+
     return ( A11, A12, A13,
              A21, A22, A23,
              A31, A32, A33 )
-    
-end
 
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end

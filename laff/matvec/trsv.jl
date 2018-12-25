@@ -1,5 +1,5 @@
 """
-    trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
+    trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::Union{LinearAlgebra.Transpose{T, Array{T}} where N where T <: Number, Array{T} where T <:Number} )
 
 Solve A x = b or trans( A ) x = b, overwriting b with x
 
@@ -24,7 +24,7 @@ elseif diag == "Nonunit diagonal"
 
 """
 
-function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
+function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <: Number, b::Union{LinearAlgebra.Transpose{T,Array{T,N}} where N where T<:Number, Array{T} where T <:Number} )
     # Extract sizes
     m_A, n_A = size(A)
     m_b = length(b)
@@ -45,7 +45,10 @@ function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <
             end
         else # trans == "Transpose"
             if diag == "Unit diagonal"
+#                 bool = false
+#                 (size(b, 2) > size(b, 1)) && (b = Array(transpose(b)); bool = true)
                 trsv_ltu!( A, b )
+#                 bool && (b = Array(transpose(b)))
             else
                 println("laff.trsv!: trans == Transpose not yet implemented for Lower triangular, with Nonunit diagonal")
             end
@@ -61,6 +64,10 @@ function trsv!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <
         else # trans == "Transpose"
             if diag == "Nonunit diagonal"
                 trsv_utn!( A, b )
+#                 bool = false
+#                 (size(b, 2) > size(b, 1)) && (b = Array(transpose(b)); bool = true)
+#                 trsv_utn!( A, b )
+#                 bool && (b = Array(transpose(b)))
             else
                 println("laff.trsv!: trans == Transpose not yet implemented for Upper Triangular with Unit diagonal")
             end
