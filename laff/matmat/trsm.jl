@@ -32,7 +32,7 @@ function trsm!(uplo::String, trans::String, diag::String, A::Matrix{T} where T <
     @assert ((uplo == "Lower triangular") || (uplo == "Upper triangular")) "laff.trsm!: illegal value for uplo"
     @assert ((trans == "No transpose") || (trans == "Transpose")) "laff.trsm!: illegal value for trans"
     @assert ((diag == "Nonunit diagonal") || (diag == "Unit diagonal")) "laff.trsm!: illegal value for diag"
-    @assert m_B == n_A "laff.trsm!: size mismatch between B and A"
+    @assert m_B == m_A "laff.trsm!: size mismatch between B and A: $(size(B)), $(size(A))"
     
     if uplo == "Lower triangular"
         if trans == "No transpose"

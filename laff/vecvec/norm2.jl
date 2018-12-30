@@ -1,9 +1,9 @@
 """
-    norm2( x::Union{LinearAlgebra.Transpose{T, Vector{T}} where T <: Number, Vector{T} where T <:Number} )
+    norm2( x::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
 
-Compute the 2-norm of a vector, returning alpha. x can be a row or column vector.
+Compute the 2-norm of an Array, returning alpha. x can be an `Array` or a transposed `Array`.
 """
-function norm2( x::Union{LinearAlgebra.Transpose{T, Vector{T}} where T <: Number, Vector{T} where T <:Number} )
+function norm2( x::Union{LinearAlgebra.Transpose{T, Array{T}} where T <: Number, Array{T} where T <:Number} )
     # Ensure that we don't modify x in any way by copying it to a new vector, y
     m = length(x)
     y = fill(0.0, m)
